@@ -4,6 +4,7 @@ const cors = require('cors');
 const querystring = require('query-string');
 const cookieParser = require('cookie-parser');
 const axios = require('axios');
+const path = require('path');
 
 //enviorment varibles
 const client_id = process.env.CLIENT_ID;
@@ -12,13 +13,18 @@ let redirect_uri = process.env.REDIRECT_URI || 'http://localhost:8000/callback';
 let frontend_uri = process.env.FRONTEND_URI || 'http://localhost:3000'; 
 const port = process.env.PORT || 8000;
 
-// Priority serve any static files.
-server.use(express.static(path.resolve(__dirname, '../client/build')));
+if (process.env.NODE_ENV !== 'production') {
+    REDIRECT_URI = 'http://localhost:8888/callback';
+    FRONTEND_URI = 'http://localhost:3000';
+}
 
 //server packages applications
 const server = express();
 server.use(cors());
 server.use(cookieParser());
+
+// Priority serve any static files.
+server.use(express.static(path.resolve(__dirname, '../client/build')));
 
 //function that generates a random string we store as state
 const generateRandomString = (length) => {
