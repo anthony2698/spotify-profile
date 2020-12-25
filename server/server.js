@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const querystring = require('query-string');
 const cookieParser = require('cookie-parser');
-const request = require('request');
+const axios = require('axios');
 
 //enviorment varibles
 const client_id = process.env.CLIENT_ID;
@@ -11,6 +11,9 @@ const client_secret = process.env.CLIENT_SECRET;
 let redirect_uri = process.env.REDIRECT_URI || 'http://localhost:8000/callback';
 let frontend_uri = process.env.FRONTEND_URI || 'http://localhost:3000'; 
 const port = process.env.PORT || 8000;
+
+// Priority serve any static files.
+server.use(express.static(path.resolve(__dirname, '../client/build')));
 
 //server packages applications
 const server = express();
@@ -54,7 +57,79 @@ server.get('/login', (req, res) => {
 
 //callback endpoint
 server.get('/callback', (req, res) => {
-    
+    //the application request refresh and access tokens, after checking state parameter
+    const code = req.query.code || null;
+    const state = req.query.state || null;
+    const storedState = req.cookies ? req.cookies[stateKey] : null;
+
+    //if state is null or not equal to the stored state we get back from the cookie we send error, else we clear the cookie and create the authOptions object to pass 
+    //into the post request, once we get back the tokens we can pass the tokens to the browser, if tokens are invalid we let the user know 
+    if(state == null || state !== storedState) {
+        res.redirect(`/#${querystring.stringify({ error: 'state mismatch' })}`)
+    } else {
+        res.clearCookie(stateKey)
+        const authOptions = {
+            url: 'https://accounts.spotify.com/api/token',
+            form: {
+                code: code,
+                redirect_uri: redirect_uri,
+                grant_type: 'authorization_code',
+            },
+            headers: {
+                Authorization: `Basic ${new Buffer.from(`${client_id}:${client_secret}`).toString(
+                    'base64',
+                )}`,
+            },
+            json: true,
+        };
+        axios.post(authOptions, (error, response, body) => {
+            if(!error && response.stausCode === 200) {
+                const access_token = body.access_token;
+                const refresh_token = body.refresh_token;
+
+                //we can pass the tokens to the browser to make request from there
+                res.redirect(
+                    `${frontend_uri}/#${querystring.stringify({
+                        access_token,
+                        refresh_token
+                    })}`,
+                );
+            } else {
+                res.redirect(
+                    `/#${querystring.stringify({ error: 'invalid token' })}`
+                )
+            }
+        });
+    }
+});
+
+//refresh token endpoint, to request access token from refresh token. When we post we check to see if we get no errors and the code is 200, if so we send the new access token
+server.get('/refresh_token', (req, res) => {
+    const refresh_token = req.query.refresh_token;
+    const authOptions = {
+        url: 'https://accounts.spotify.com/api/token',
+        headers: {
+            Authorization: `Basic ${new Buffer.from(`${client_id}:${client_secret}`).toString(
+                'base64',
+            )}`,
+        },
+        form: {
+            grant_type: 'refresh_token',
+            refresh_token,
+        },
+        json: true,
+    };
+    axios.post(authOptions, (error, response, body) => {
+        if (!error && response.statusCode === 200) {
+            const access_token = body.access_token;
+            res.send({ access_token });
+        }
+    });
+});
+
+// All remaining requests return the React app, so it can handle routing.
+server.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client/public', 'index.html'));
 });
 
 module.exports = server;
