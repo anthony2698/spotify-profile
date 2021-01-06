@@ -89,10 +89,9 @@ server.get('/callback', (req, res) => {
             },
             json: true,
             })
-            .then(body => {
-                const access_token = body.data.access_token;
-                const refresh_token = body.data.refresh_token;
-                console.log(body)
+            .then(response => {
+                const access_token = response.data.access_token;
+                const refresh_token = response.data.refresh_token;
                 res.redirect(
                     `${frontend_uri}/#${querystring.stringify({
                       access_token,
@@ -107,32 +106,36 @@ server.get('/callback', (req, res) => {
     }
 });
 
-// //refresh token endpoint, to request access token from refresh token. When we post we check to see if we get no errors and the code is 200, if so we send the new access token
-// server.get('/refresh_token', (req, res) => {
-//     const refresh_token = req.query.refresh_token;
-//     const authOptions = {
-//         url: 'https://accounts.spotify.com/api/token',
-//         headers: {
-//             Authorization: `Basic ${new Buffer.from(`${client_id}:${client_secret}`).toString(
-//                 'base64',
-//             )}`,
-//         },
-//         form: {
-//             grant_type: 'refresh_token',
-//             refresh_token,
-//         },
-//         json: true,
-//     };
-//     axios.post(authOptions.url, authOptions)
-//         .then(res => { 
-//             res.send({ access_token });
-//         })
-// });
+//refresh token endpoint, to request access token from refresh token. When we post we check to see if we get no errors and the code is 200, if so we send the new access token
+server.get('/refresh_token', (req, res) => {
+    const refresh_token = req.query.refresh_token;
+    axios({
+        method: 'post',
+        url: 'https://accounts.spotify.com/api/token',
+        params: {
+            grant_type: 'refresh_token',
+            refresh_token: refresh_token
+        },
+        headers: {
+            'Authorization': `Basic ${new Buffer.from(`${client_id}:${client_secret}`).toString('base64')}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        json: true,
+    })
+    .then(response => {
+        const access_token = response.data.access_token
+        res.send({ access_token })
+    })
+    .catch(error => {
+        console.log(error)
+        res.redirect(`/#${querystring.stringify({ error: 'invalid_token' })}`);
+    });
+});
 
 // All remaining requests return the React app, so it can handle routing.
-// server.get('*', (req, res) => {
-//     res.sendFile(path.resolve(__dirname, '../client/public', 'index.html'));
-// });
+server.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client/public', 'index.html'));
+});
 
 module.exports = server;
 
