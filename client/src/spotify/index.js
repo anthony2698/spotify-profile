@@ -84,6 +84,95 @@ export const logout = () => {
     window.location.reload();
 };
 
+//API CALLS
 
+const headers = {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+};
 
+// Get Current User's Information
+export const getUser = () => {
+    axios.get('https://api.spotify.com/v1/me', headers);
+}
 
+// Get User's followed Artists
+export const getFollowing = () => {
+    axios.get('https://api.spotify.com/v1/me/following?type=artist', { headers });
+}
+
+// Get Current Users Recently Played Tracks
+export const getRecentlyPlayed = () => {
+    axios.get('https://api.spotify.com/v1/me/player/recently-played', { headers });
+}
+
+// Get Current User's Playlists
+export const getPlaylists = () => {
+    axios.get('https://api.spotify.com/v1/me/playlists', { headers });
+}
+
+// Get User's Top Artists
+export const getTopArtistShort = () => {
+    axios.get('https://api.spotify.com/v1/me/top/artists?limit=50&time_range=short_term', { headers });
+}
+
+export const getTopArtistMedium = () => {
+    axios.get('https://api.spotify.com/v1/me/top/artists?limit=50&time_range=medium_term', { headers });
+}
+
+export const getTopArtistLong = () => {
+    axios.get('https://api.spotify.com/v1/me/top/artists?limit=50&time_range=long_term', { headers });
+}
+
+// Get User Top Tracks 
+export const getTopTracksShort = () => {
+    axios.get('https://api.spotify.com/v1/me/top/tracks?limit=50&time_range=short_term', { headers });
+}
+
+export const getTopTracksMedium = () => {
+    axios.get('https://api.spotify.com/v1/me/top/tracks?limit=50&time_range=medium_term', { headers });
+}
+
+export const getTopTracksLong = () => {
+    axios.get('https://api.spotify.com/v1/me/top/tracks?limit=50&time_range=long_term', { headers });
+}
+
+// Get an Artist
+export const getArtist = artistId => {
+    axios.get(`https://api.spotify.com/v1/artists/${artistId}`, { headers });
+}
+
+//Follow an Artists
+export const followArtist = artistId => {
+    const url = `https://api.spotify.com/v1/me/following?type=artist&ids=${artistId}`;
+    return axios({ method: 'put', url, headers });
+}
+
+// Check if User Follows Artists
+export const doesUserFollowArtist = artistId => {
+    axios.get(`https://api.spotify.com/v1/me/following/contains?type=artist&ids=${artistId}`, { headers });
+}
+
+// Check if User Follows Playlist
+export const doesUserFollowPlaylist = (playlistId, userId) => {
+    axios.get(`https://api.spotify.com/v1/playlists/${playlistId}/followers/contains?ids=${userId}`, { headers });
+}
+
+// Create a Playlist
+export const createPlaylist = (userId, name) => {
+    const url = `https://api.spotify.com/v1/users/${userId}/playlists`;
+    const data = JSON.stringify({ name });
+    return axios({ method: 'post', url, headers, data });
+}
+
+// Adds Track to Playlist
+export const addTracksToPlaylist = (playlistId, uris) => {
+    const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${uris}`;
+    return axios({ method: 'post', url, headers });
+}
+
+// Follow Playlist
+export const followPlaylist = playlistId => {
+    const url = `https://api.spotify.com/v1/playlists/${playlistId}/followers`;
+    return axios({ method: 'put', url, headers });
+};
