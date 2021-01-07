@@ -1,5 +1,7 @@
-//packages needed for spotify authorization
+//Needed to extract enviorment variables
 require('dotenv').config();
+
+//packages needed for spotify authorization
 const express = require('express');
 const cors = require('cors');
 const querystring = require('query-string');
@@ -14,6 +16,7 @@ let redirect_uri = process.env.REDIRECT_URI || 'http://localhost:8000/callback';
 let frontend_uri = process.env.FRONTEND_URI || 'http://localhost:3000'; 
 const port = process.env.PORT || 8000;
 
+//Production or Development Enviorment
 if (process.env.NODE_ENV !== 'production') {
     redirect_uri = 'http://localhost:8000/callback';
     frontend_uri = 'http://localhost:3000';
@@ -69,8 +72,8 @@ server.get('/callback', (req, res) => {
     const state = req.query.state || null;
     const storedState = req.cookies ? req.cookies[stateKey] : null;
 
-    //if state is null or not equal to the stored state we get back from the cookie we send error, else we clear the cookie and create the authOptions object to pass 
-    //into the post request, once we get back the tokens we can pass the tokens to the browser, if tokens are invalid we let the user know 
+    //if state is null or not equal to the stored state we get back from the cookie we send error, else we clear the cookie and create the axios post object to pass 
+    //into the spotify server, once we get back the tokens we can pass the tokens to the browser, if tokens are invalid we let the user know 
     if(state == null || state !== storedState) {
         res.redirect(`/#${querystring.stringify({ error: 'state mismatch' })}`)
     } else {
