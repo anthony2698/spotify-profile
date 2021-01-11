@@ -2,35 +2,35 @@ import axios from 'axios';
 import { getHashParams } from '../utils';
 
 // Tokens
-const expiration_time = 3600 * 1000 // 3600 seconds * 1000 = 1 hour in milli-seconds
+export const expiration_time = 3600 * 1000 // 3600 seconds * 1000 = 1 hour in milli-seconds
 
-const setTokenTimestamp = () => {
+export const setTokenTimestamp = () => {
     window.localStorage.setItem('spotify_token_timestamp', Date.now());
 };
 
-const setLocalAccessToken = token => {
+export const setLocalAccessToken = token => {
     setTokenTimestamp();
     window.localStorage.setItem('spotify_access_token', token);
 };
 
-const setLocalRefreshToken = token => {
+export const setLocalRefreshToken = token => {
     window.localStorage.setItem('spotify_refresh_token', token);
 };
 
-const getTokenTimestamp = () => {
+export const getTokenTimestamp = () => {
     window.localStorage.getItem('spotify_token_timestamp');
 };
 
-const getLocalAccessToken = () => {
+export const getLocalAccessToken = () => {
     window.localStorage.getItem('spotify_access_token');
 };
 
-const getLocalRefreshToken = () => {
+export const getLocalRefreshToken = () => {
     window.localStorage.getItem('spotify_refesh_token');
 };
 
 // Refresh the token
-const refreshAccessToken = async () => {
+export const refreshAccessToken = async () => {
     try {
         const { data } = await axios.get(`/refresh_token?refresh_token=${getLocalRefreshToken()}`)
         const { accessToken } = data;
@@ -43,9 +43,9 @@ const refreshAccessToken = async () => {
 };
 
 // Get access token from query params (called on application init)
-const getAccessToken = () => {
+export const getAccessToken = () => {
     const { error, access_token, refresh_token } = getHashParams();
-
+    
     if(error) {
         console.log(error);
         refreshAccessToken();
@@ -68,13 +68,15 @@ const getAccessToken = () => {
     //If there is no access token, set it as access_token from params
     if(!localAccessToken || localAccessToken === 'undefined') {
         setLocalAccessToken(access_token);
+        return access_token;
     }
 
     return localAccessToken;
 };
 
 //Token
-const token = getAccessToken();
+export const token = getAccessToken();
+
 
 //Logout
 export const logout = () => {
@@ -190,8 +192,35 @@ export const getTrackAudioAnalysis = trackId => axios.get(`https://api.spotify.c
 // Get Audio Features for Track
 export const getTrackAudioFeatures = trackId => axios.get(`https://api.spotify.com/v1/audio-features/${trackId}`, { headers });
 
-//Resolve all User Info
+// Resolve all User Info
 export const getUserInfo = () => {
     return axios
-        .all([getUser(), getFollowing(), getPlaylist(), getTopArtistsLong(), get])
-}
+        .all([getUser(), getFollowing(), getPlaylist(), getTopArtistsLong(), getTopTracksLong()])
+        .then(
+            axios.spread((user, followedArtists, playlists, topArtists, topTracks) => {
+                return {
+                    user: user.data,
+                    followedArtists: followedArtists.data,
+                    playlists: playlists.data,
+                    topArtists: topArtists.data,
+                    topTracks: topTracks.data
+                };
+            }),
+        );
+};
+
+// Resolve all Track Info
+export const getTrackInfo = trackId => {
+    return axios
+        .all([getTrack(trackId), getTrackAudioAnalysis(trackId), getTrackAudioFeatures(trackId)])
+        .then(
+            axios.spread((track, audioAnalysis, audioFeatures) => {
+              return {
+                track: track.data,
+                audioAnalysis: audioAnalysis.data,
+                audioFeatures: audioFeatures.data,
+              };
+            }),
+        );
+};
+      
