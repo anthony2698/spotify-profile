@@ -7,7 +7,6 @@ export const getHashParams = () => {
     while((e = r.exec(q))) {
         hashParams[e[1]] = decodeURIComponent(e[2]);
     }
-    console.log(window.location);
     return hashParams;
 }
 

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import { token as accessToken } from './spotify';
 
@@ -15,9 +16,11 @@ function App() {
     }, [])
     
     return (
-        <AppContainer>
-            {token.token ? <Profile /> : <LoginScreen />}
-        </AppContainer>
+        <Router>
+            <AppContainer>
+                {token.token ? <Profile /> : <LoginScreen />}
+            </AppContainer>
+        </Router>
     );
 }
 

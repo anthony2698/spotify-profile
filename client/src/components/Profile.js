@@ -1,8 +1,13 @@
 import React from 'react';
 
+import ScrollToTop from './ScrollToTop.js';
+import Nav from './Nav.js';
+
 const Profile = () => {
     return(
-        <div>hi</div>
+        <div>
+            <Nav />
+        </div>
     )
 }
 
