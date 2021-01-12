@@ -94,7 +94,7 @@ const headers = {
 };
 
 // Get Current User's Information
-export const getUser = () => axios.get('https://api.spotify.com/v1/me', headers);
+export const getUser = () => axios.get('https://api.spotify.com/v1/me', { headers });
 
 // Get User's followed Artists
 export const getFollowing = () => axios.get('https://api.spotify.com/v1/me/following?type=artist', { headers });
@@ -195,7 +195,7 @@ export const getTrackAudioFeatures = trackId => axios.get(`https://api.spotify.c
 // Resolve all User Info
 export const getUserInfo = () => {
     return axios
-        .all([getUser(), getFollowing(), getPlaylist(), getTopArtistsLong(), getTopTracksLong()])
+        .all([getUser(), getFollowing(), getPlaylists(), getTopArtistsLong(), getTopTracksLong()])
         .then(
             axios.spread((user, followedArtists, playlists, topArtists, topTracks) => {
                 return {
