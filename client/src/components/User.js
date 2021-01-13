@@ -22,7 +22,6 @@ const User = () => {
     async function getData() {
         const { user, followedArtists, playlists, topArtists, topTracks } = await getUserInfo();
         setData({ user, followedArtists, playlists, topArtists, topTracks });
-        console.log(topTracks)
     };
 
     const { user, followedArtists, playlists, topArtists, topTracks } = data;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
+
 import ScrollToTop from './ScrollToTop.js';
 import Nav from './Nav.js';
 import RecentlyPlayed from './RecentlyPlayed.js';
@@ -18,28 +19,28 @@ const Profile = () => {
             <Switch>
                 {/* <ScrollToTop path='/'> */}
                     <Route exact path='/'>
-                        <User path='/'/>
+                        <User />
                     </Route>
-                    <Route path='recentlyPlayed'>
-                        <RecentlyPlayed path='recentlyPlayed'/>
+                    <Route exact path='/recentlyPlayed'>
+                        <RecentlyPlayed />
                     </Route>
-                    <Route path='artists'>
-                        <TopArtists path='artists' />
+                    <Route exact path='/artists'>
+                        <TopArtists />
                     </Route>
-                    <Route path='tracks'>
-                        <TopTracks path='tracks' />
+                    <Route exact path='/tracks'>
+                        <TopTracks />
                     </Route>
-                    <Route path='playlists'>
-                        <Playlists path='playlists' />
+                    <Route exact path='/playlists'>
+                        <Playlists />
                     </Route>
-                    <Route>
-                        <Playlist path='playlist/:playlistID' />
+                    <Route exact path='/playlist/:playlistID'>
+                        <Playlist />
                     </Route>
-                    <Route path='track/:trackID'>
-                        <Track path='track/:trackID' />
+                    <Route exact path='/track/:trackID'>
+                        <Track />
                     </Route>
-                    <Route path='artist/:artistID'>
-                        <Artist path='artist/:artistID' />
+                    <Route exact path='/artist/:artistID'>
+                        <Artist />
                     </Route>
                 {/* </ScrollToTop> */}
             </Switch>
