@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { getTopTracksShort, getTopTracksMedium, getTopTracksLong } from '../spotify';
+import { catchErrors } from '../utils';
 
 import Loader from './Loader.js';
 import TrackItem from './TrackItem.js';
-import { catchErrors } from '../utils';
+
 
 const TopTracks = () => {
     const [data, setData] = useState({ 
