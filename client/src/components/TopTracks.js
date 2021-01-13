@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getTopTracksShort, getTopTracksMedium, getTopTracksLong, getTopArtistsLong } from '../spotify';
+import { getTopTracksShort, getTopTracksMedium, getTopTracksLong } from '../spotify';
 
 import Loader from './Loader.js';
 import TrackItem from './TrackItem.js';
@@ -8,13 +8,13 @@ import { catchErrors } from '../utils';
 const TopTracks = () => {
     const [data, setData] = useState({ 
         topTracks: null,
-        activeRange: 'long'
+        activeRange: 'long',
     });
 
     const apiCalls = {
-        long: getTopArtistsLong(),
+        long: getTopTracksLong(),
         medium: getTopTracksMedium(),
-        short: getTopTracksMedium()
+        short: getTopTracksShort(),
     };
 
     useEffect(() => {
@@ -22,18 +22,19 @@ const TopTracks = () => {
     }, []);
 
     async function getData() {
-        const data = await getTopArtistsLong();
-        useState({ topTracks: data })
+        const { data } = await getTopTracksLong();
+        console.log(data);
+        setData({ topTracks: data })
     }
 
     async function changeRange(range) {
         const { data } = await apiCalls[range];
-        useState({ topTracks: data, activeRange: range })
+        setData({ topTracks: data, activeRange: range })
     }
 
     const setActiveRange = range => catchErrors(changeRange(range));
 
-    const { topTracks } = data;
+    const { topTracks, activeRange } = data;
 
     return (
         <main>
@@ -51,7 +52,7 @@ const TopTracks = () => {
                         <span>Last 6 Months</span>
                     </button>
                     <button
-                        isActive={activeRange === 'short' }
+                        isActive={activeRange === 'short'}
                         onClick={() => setActiveRange('short')}>
                         <span>Last Month</span>
                     </button>
