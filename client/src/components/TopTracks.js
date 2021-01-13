@@ -24,7 +24,6 @@ const TopTracks = () => {
 
     async function getData() {
         const { data } = await getTopTracksLong();
-        console.log(data);
         setData({ topTracks: data })
     }
 
