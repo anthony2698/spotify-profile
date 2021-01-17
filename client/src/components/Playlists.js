@@ -12,7 +12,7 @@ const Playlists = () => {
 
     useEffect(() => {
         catchErrors(getData());
-    });
+    }, []);
 
     async function getData() {
         const { data } = await getPlaylists();
