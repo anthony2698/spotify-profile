@@ -33,13 +33,13 @@ const Profile = () => {
                     <Route exact path='/playlists'>
                         <Playlists />
                     </Route>
-                    <Route exact path='/playlist/:playlistID'>
+                    <Route exact path='/playlist/:playlistId'>
                         <Playlist />
                     </Route>
-                    <Route exact path='/track/:trackID'>
+                    <Route exact path='/track/:trackId'>
                         <Track />
                     </Route>
-                    <Route exact path='/artist/:artistID'>
+                    <Route path='/artist/:artistId'>
                         <Artist />
                     </Route>
                 {/* </ScrollToTop> */}

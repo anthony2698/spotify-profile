@@ -1,44 +1,45 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+
 import PropTypes from 'prop-types';
-import { formatWithCommas, CatchErrors, catchErrors } from '../utils';
+import { formatWithCommas, catchErrors } from '../utils';
 import { getArtist, followArtist, doesUserFollowArtist } from '../spotify';
 
 import Loader from './Loader.js';
 
 const Artist = (props) => {
     const [data, setData] = useState({
-        artist: null,
-        isFollowing: null,
+        artist: null
     });
+
+    const [following, setFollowing] = useState()
+
+    const { artistId } = useParams();
 
     useEffect(() => {
         catchErrors(getData());
         catchErrors(isFollowing());
-    });
+    }, []);
 
     async function getData() {
-        const { artistId } = props;
         const { data } = await getArtist(artistId);
         setData({
-            artist: data,
+            artist: data
         });
     };
 
     async function isFollowing() {
-        const { artistId } = props;
         const { data } = await doesUserFollowArtist(artistId);
-        setData({
-            isFollowing: data[0],
-        });
+        setFollowing(data[0]);
     }
 
     async function follow() {
-        const { artistId } = props;
         await followArtist(artistId);
         isFollowing();
     }
 
-    const { artist, isFollowing } = data;
+    const { artist } = data;
+    console.log(data, following);
 
     return (
         <>
@@ -58,14 +59,23 @@ const Artist = (props) => {
                     {artist.genres && (
                         <div>
                             <div>
-                            {artist.generes.map(genre => (
+                            {artist.genres.map(genre => (
                                 <div key={genre}>{genre}</div>
                             ))}
                             </div>
-                            <p>Genre</p>
+                            <p>Genres</p>
+                        </div>
+                    )}
+                    {artist.popularity && (
+                        <div>
+                            <div>{artist.popularity}%</div>
+                            <p>Popularity</p>
                         </div>
                     )}
                 </div>
+                <button isFollowing={following} onClick={catchErrors(follow)}>
+                        {following ? 'Following' : 'Follow'}
+                </button>
                 </main>
             ) : (
                 <Loader />
