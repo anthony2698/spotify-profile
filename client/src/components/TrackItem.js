@@ -31,6 +31,9 @@ const TrackItem = ({ track }) => {
                             </div>
                         )}
                     </span>
+                    <span>
+                        {track.duration_ms && <span>{formatDuration(track.duration_ms)}</span>}
+                    </span>
                 </div>
             </Link>
         </li>

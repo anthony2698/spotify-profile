@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import PropTypes from 'prop-types';
 import { formatWithCommas, catchErrors } from '../utils';
 import { getArtist, followArtist, doesUserFollowArtist } from '../spotify';
 
@@ -39,7 +38,6 @@ const Artist = (props) => {
     }
 
     const { artist } = data;
-    console.log(data, following);
 
     return (
         <>
