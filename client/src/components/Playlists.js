@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { catchErrors } from '../utils';
 import { getPlaylists } from '../spotify';
 
 import Loader from './Loader';
+import { Main } from '../globalStyles';
+import { Wrapper, PlaylistName, PlaylistsContainer, Playlist, PlaylistCover, TotalTracks, Mask } from '../styles/PlaylistsStyles.js';
 
 const Playlists = () => {
     const [data, setData] = useState({
@@ -21,39 +22,36 @@ const Playlists = () => {
     const { playlists } = data;
 
     return (
-        <main>
+        <Main>
             <h2>Your Playlists</h2>
             <div>
-                <div>
+                <Wrapper>
+                    <PlaylistsContainer>
                     {playlists ? (
                         playlists.items.map(({ id, images, name, tracks }, i) => (
-                            <div key={i}>
-                                <Link to={`/playlist/${id}`}>
+                            <Playlist key={i}>
+                                <PlaylistCover to={`/playlist/${id}`}>
                                     {images.length ? (
                                         <img src={images[0].url} alt='Album Art'/>
                                     ) : (
                                         <div>
-                                            <div>
-                                                Icon
-                                            </div>
+                                            Icon
                                         </div>
                                     )}
-                                    <div>
-                                        <i />
-                                    </div>
-                                </Link>
+                                </PlaylistCover>
                                 <div>
-                                    <Link to={id}>{name}</Link>
-                                    <div>{tracks.total} Tracks</div>
+                                    <PlaylistName to={id}>{name}</PlaylistName>
+                                    <TotalTracks>{tracks.total} Tracks</TotalTracks>
                                 </div>
-                            </div>
+                            </Playlist>
                         ))
                     ) : (
                         <Loader />
                     )}
-                </div>
+                    </PlaylistsContainer>
+                </Wrapper>
             </div>
-        </main>
+        </Main>
     )
 }
 

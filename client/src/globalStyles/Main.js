@@ -1,27 +1,26 @@
-import { css } from 'styled-components';
+import styled from 'styled-components';
+import media from './media';
 
-const sizes = {
-  giant: 1440,
-  desktop: 1200,
-  netbook: 1000,
-  tablet: 768,
-  thone: 600,
-  phablet: 480,
-  phone: 376,
-  tiny: 330,
-};
+const Main = styled.main`
+  width: 100%;
+  margin: 0 auto;
+  max-width: 1400px;
+  min-height: 100vh;
+  padding: 80px;
+  ${media.desktop`
+    padding: 60px 50px;
+  `};
+  ${media.tablet`
+    padding: 50px 40px;
+  `};
+  ${media.phablet`
+    padding: 30px 25px;
+  `};
+  h2 {
+    ${media.tablet`
+      text-align: center;
+    `};
+  }
+`;
 
-// iterate through the sizes and create a media template
-export const media = Object.keys(sizes).reduce((accumulator, label) => {
-  // use em in breakpoints to work properly cross-browser and support users
-  // changing their browsers font-size: https://zellwk.com/blog/media-query-units/
-  const emSize = sizes[label] / 16;
-  accumulator[label] = (...args) => css`
-    @media (max-width: ${emSize}em) {
-      ${css(...args)};
-    }
-  `;
-  return accumulator;
-}, {});
-
-export default media;
+export default Main;

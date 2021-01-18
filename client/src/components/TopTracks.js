@@ -5,6 +5,9 @@ import { catchErrors } from '../utils';
 import Loader from './Loader.js';
 import TrackItem from './TrackItem.js';
 
+import { Main } from '../globalStyles';
+import { Header, Ranges, TracksContainer, RangeButton } from '../styles/TopTracksStyles.js';
+
 
 const TopTracks = () => {
     const [data, setData] = useState({ 
@@ -37,35 +40,35 @@ const TopTracks = () => {
     const { topTracks, activeRange } = data;
 
     return (
-        <main>
-            <header>
+        <Main>
+            <Header>
                 <h2>Top Tracks</h2>
-                <div>
-                    <button
+                <Ranges>
+                    <RangeButton
                         isActive={activeRange === 'long'}
                         onClick={() => setActiveRange('long')}>
                         <span>All Time</span>
-                    </button>
-                    <button
+                    </RangeButton>
+                    <RangeButton
                         isActive={activeRange === 'medium'}
                         onClick={() => setActiveRange('medium')}>
                         <span>Last 6 Months</span>
-                    </button>
-                    <button
+                    </RangeButton>
+                    <RangeButton
                         isActive={activeRange === 'short'}
                         onClick={() => setActiveRange('short')}>
                         <span>Last Month</span>
-                    </button>
-                </div>
-            </header>
-            <ul>
+                    </RangeButton>
+                </Ranges>
+            </Header>
+            <TracksContainer>
                 {topTracks ? (
                     topTracks.items.map((track, i) => <TrackItem track={track} key={i}/>)
                 ) : (
                     <Loader />
                 )}
-            </ul>
-        </main>
+            </TracksContainer>
+        </Main>
     )
 }
 

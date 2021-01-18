@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, StaticRouter } from 'react-router-dom';
 
 import { formatWithCommas, catchErrors } from '../utils';
 import { getArtist, followArtist, doesUserFollowArtist } from '../spotify';
 
 import Loader from './Loader.js';
+import { ArtistContainer, Artwork, ArtistName, Stats, Stat, Number, NumLabel, FollowButton } from '../styles/ArtistStyles.js';
 
 const Artist = (props) => {
     const [data, setData] = useState({
@@ -42,39 +43,39 @@ const Artist = (props) => {
     return (
         <>
             {artist ? (
-                <main>
-                    <div>
+                <ArtistContainer>
+                    <Artwork>
                         <img src={artist.images[0].url} alt='Artist Artwork'/>
-                    </div>
+                    </Artwork>
                 <div>
-                    <h1>{artist.name}</h1>
+                    <ArtistName>{artist.name}</ArtistName>
                 </div>
-                <div>
-                    <div>
-                        <div>{formatWithCommas(artist.followers.total)}</div>
-                        <p>Followers</p>
-                    </div>
+                <Stats>
+                    <Stat>
+                        <Number>{formatWithCommas(artist.followers.total)}</Number>
+                        <NumLabel>Followers</NumLabel>
+                    </Stat>
                     {artist.genres && (
-                        <div>
-                            <div>
+                        <Stat>
+                            <Number>
                             {artist.genres.map(genre => (
                                 <div key={genre}>{genre}</div>
                             ))}
-                            </div>
-                            <p>Genres</p>
-                        </div>
+                            </Number>
+                            <NumLabel>Genres</NumLabel>
+                        </Stat>
                     )}
                     {artist.popularity && (
-                        <div>
-                            <div>{artist.popularity}%</div>
-                            <p>Popularity</p>
-                        </div>
+                        <Stat>
+                            <Number>{artist.popularity}%</Number>
+                            <NumLabel>Popularity</NumLabel>
+                        </Stat>
                     )}
-                </div>
-                <button isFollowing={following} onClick={catchErrors(follow)}>
+                </Stats>
+                <FollowButton isFollowing={following} onClick={catchErrors(follow)}>
                         {following ? 'Following' : 'Follow'}
-                </button>
-                </main>
+                </FollowButton>
+                </ArtistContainer>
             ) : (
                 <Loader />
             )}

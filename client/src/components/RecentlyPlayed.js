@@ -5,6 +5,9 @@ import Loader from './Loader.js';
 import TrackItem from './TrackItem.js';
 import { getRecentlyPlayed } from '../spotify';
 
+import { Main } from '../globalStyles';
+import { TracksContainer } from '../styles/RecentlyPlayedStyles';
+
 
 const RecentlyPlayed = () => {
     const [data, setData] = useState({
@@ -23,16 +26,16 @@ const RecentlyPlayed = () => {
     const { recentlyPlayed } = data;
 
     return (
-        <main>
+        <Main>
             <h2>Recently Played</h2>
-            <ul>
+            <TracksContainer>
                 {recentlyPlayed ? (
                     recentlyPlayed.items.map(({ track }, i) => <TrackItem track={track} key={i} />)
                 ) : (
                     <Loader />
                 )}
-            </ul>
-        </main>
+            </TracksContainer>
+        </Main>
     );
 }
 
