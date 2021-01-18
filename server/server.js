@@ -58,10 +58,10 @@ server.get('/login', (req, res) => {
 
     //redirects to spotify authorization tool, with needed params
     res.redirect(`https://accounts.spotify.com/authorize?${querystring.stringify({
-        client_id: client_id,
         response_type: 'code',
-        redirect_uri: redirect_uri,
+        client_id: client_id,
         scope: scope,
+        redirect_uri: redirect_uri,
         state: state,
     })}`);
 });
