@@ -28,7 +28,7 @@ const Playlists = () => {
                     {playlists ? (
                         playlists.items.map(({ id, images, name, tracks }, i) => (
                             <div key={i}>
-                                <Link to={id}>
+                                <Link to={`/playlist/${id}`}>
                                     {images.length ? (
                                         <img src={images[0].url} alt='Album Art'/>
                                     ) : (

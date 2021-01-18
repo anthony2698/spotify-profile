@@ -4,8 +4,6 @@ import { formatDuration, getYear, parsePitchClass, catchErrors } from '../utils'
 import { getTrackInfo } from '../spotify';
 
 import Loader from './Loader.js';
-import FeatureChart from './FeatureChart.js';
-
 
 const Track = () => {
     const [data, setData] = useState({
@@ -109,7 +107,7 @@ const Track = () => {
                                 </div>
                             </div>
 
-                            <FeatureChart features={audioFeatures} type=""/>
+                            {/* <FeatureChart features={audioFeatures} type=""/> */}
                         </div>
                     )}
                 </main>
