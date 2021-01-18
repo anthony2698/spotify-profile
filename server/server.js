@@ -1,6 +1,3 @@
-//Needed to extract enviorment variables
-require('dotenv').config();
-
 //packages needed for spotify authorization
 const express = require('express');
 const cors = require('cors');
@@ -43,6 +40,11 @@ const generateRandomString = (length) => {
 
 //key name we will pass into the cookie with actual state
 const stateKey = 'spotify_auth_state';
+
+// All remaining requests return the React app, so it can handle routing.
+server.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client/public', 'index.html'));
+});
 
 //login endpoint
 server.get('/login', (req, res) => {
@@ -133,11 +135,6 @@ server.get('/refresh_token', (req, res) => {
         console.log(error)
         res.redirect(`/#${querystring.stringify({ error: 'invalid_token' })}`);
     });
-});
-
-// All remaining requests return the React app, so it can handle routing.
-server.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../client/public', 'index.html'));
 });
 
 module.exports = server;
