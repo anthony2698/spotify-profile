@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 //packages needed for spotify authorization
 const express = require('express');
 const cors = require('cors');
