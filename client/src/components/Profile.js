@@ -1,7 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import ScrollToTop from './ScrollToTop.js';
 import Nav from './Nav.js';
 import RecentlyPlayed from './RecentlyPlayed.js';
 import TopArtists from './TopArtists.js';
@@ -12,12 +11,13 @@ import User from './User.js';
 import Track from './Track.js';
 import TopTracks from './TopTracks.js';
 
+import { SiteWrapper } from '../styles/ProfileStyles.js';
+
 const Profile = () => {
     return(
-        <div>
+        <SiteWrapper>
             <Nav />
             <Switch>
-                {/* <ScrollToTop path='/'> */}
                     <Route exact path='/'>
                         <User />
                     </Route>
@@ -42,9 +42,8 @@ const Profile = () => {
                     <Route path='/artist/:artistId'>
                         <Artist />
                     </Route>
-                {/* </ScrollToTop> */}
             </Switch>
-        </div>
+        </SiteWrapper>
     )
 }
 

@@ -1,43 +1,49 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { Container, Logo, Menu, MenuItem, Github } from '../styles/NavStyles.js'
 
 const Nav = () => {
     return (
-        <nav>
-            <div>
+        <Container>
+            <Logo>
                 <Link to='/'>
-                    Spotify Icon
+                    Spotify Profile
                 </Link>
-            </div>
-            <ul>
-                <li>
+            </Logo>
+            <Menu>
+                <MenuItem>
                     <NavLink to='/'>
                         <div>Profile</div>
                     </NavLink>
-                </li>
-                <li>
+                </MenuItem>
+                <MenuItem>
                     <NavLink to='/artists'>
                         <div>Top Artists</div>
                     </NavLink>
-                </li>
-                <li>
+                </MenuItem>
+                <MenuItem>
                     <NavLink to='/tracks'>
                         <div>Top Tracks</div>
                     </NavLink>
-                </li>
-                <li>
+                </MenuItem>
+                <MenuItem>
                     <NavLink to='/recentlyPlayed'>
                         <div>Recently Played</div>
                     </NavLink>
-                </li>
-                <li>
+                </MenuItem>
+                <MenuItem>
                     <NavLink to='/playlists'>
                         <div>Playlists</div>
                     </NavLink>
-                </li>
-            </ul>
-        </nav>
-
+                </MenuItem>
+            </Menu>
+            <Github>
+                <a
+                    href='https://github.com/anthony2698/spotify-profile'>
+                    Github
+                </a>
+            </Github>
+        </Container>
     )
 }
 
