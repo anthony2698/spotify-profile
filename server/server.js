@@ -44,7 +44,7 @@ const generateRandomString = (length) => {
 const stateKey = 'spotify_auth_state';
 
 server.get('/', function (req, res) {
-    res.render('../client/build/index.html')
+    res.render(path.resolve(__dirname, '../client/build/index.html'));
 });
 
 //login endpoint
