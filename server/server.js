@@ -44,7 +44,7 @@ const generateRandomString = (length) => {
 const stateKey = 'spotify_auth_state';
 
 server.get('/', function (req, res) {
-    res.render(path.resolve(__dirname, '../client/build/index.html'));
+    res.render(path.dirname('../client/build/index.html'));
 });
 
 //login endpoint
@@ -140,7 +140,7 @@ server.get('/refresh_token', (req, res) => {
 
 // All remaining requests return the React app, so it can handle routing.
 server.get('*', (req, res) => {
-    res.render(path.resolve(__dirname, '../client/public/index.html'));
+    res.sendFile(path.resolve(__dirname, '../client/public/index.html'));
 });
 
 module.exports = server;
