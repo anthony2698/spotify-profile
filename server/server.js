@@ -140,7 +140,7 @@ server.get('/refresh_token', (req, res) => {
 
 // All remaining requests return the React app, so it can handle routing.
 server.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../client/public', 'index.html'));
+    res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
 
 module.exports = server;
