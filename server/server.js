@@ -21,14 +21,6 @@ if (process.env.NODE_ENV !== 'production') {
     frontend_uri = 'http://localhost:3000';
 }
 
-//server packages applications
-const server = express();
-server.use(cors());
-server.use(cookieParser());
-
-// Priority serve any static files.
-server.use(express.static(path.resolve(__dirname, '../client/build')));
-
 //function that generates a random string we store as state
 const generateRandomString = (length) => {
     let text = '';
@@ -38,10 +30,20 @@ const generateRandomString = (length) => {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return text;
-  };
+};
 
 //key name we will pass into the cookie with actual state
 const stateKey = 'spotify_auth_state';
+
+//server packages applications
+const server = express();
+server.use(express.static(path.resolve(__dirname, '../client/build')));
+server.use(express.static(path.resolve(__dirname, '../client/build')));
+server.use(cors());
+server.use(cookieParser());
+
+// Priority serve any static files.
+server.use(express.static(path.resolve(__dirname, '../client/build')));
 
 server.get('/', function (req, res) {
     res.render(path.dirname('../client/build/index.html'));
