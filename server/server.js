@@ -40,10 +40,10 @@ const stateKey = 'spotify_auth_state';
 const server = express();
 
 // Priority serve any static files.
-server.use(express.static(path.resolve(__dirname, '../client/build')));
+server.use(express.static(path.resolve(__dirname, '../client/public')));
 
 server
-    .use(express.static(path.resolve(__dirname, '../client/build')))
+    .use(express.static(path.resolve(__dirname, '../client/public')))
     .use(cors())
     .use(cookieParser())
     .use(
@@ -56,10 +56,10 @@ server
           ],
         }),
     )
-    .use(express.static(path.resolve(__dirname, '../client/build')));
+    .use(express.static(path.resolve(__dirname, '../client/public')));
 
 server.use('/', function (req, res) {
-    res.render(path.resolve(__dirname, '../client/build/index.html'));
+    res.render(path.resolve(__dirname, '../client/public/index.html'));
 });
 
 //login endpoint
