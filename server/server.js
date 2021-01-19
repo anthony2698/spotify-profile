@@ -59,7 +59,7 @@ server
     .use(express.static(path.resolve(__dirname, '../client/build')));
 
 server.use('/', function (req, res) {
-    res.render(path.resolve(__dirname, '../client/public/index.html'));
+    res.render(path.resolve(__dirname, '../client/build/index.html'));
 });
 
 //login endpoint
