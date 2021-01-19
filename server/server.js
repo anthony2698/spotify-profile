@@ -43,9 +43,9 @@ const generateRandomString = (length) => {
 //key name we will pass into the cookie with actual state
 const stateKey = 'spotify_auth_state';
 
-// server.get('/', function (req, res) {
-//     res.render(path.resolve(__dirname, '../client/build', 'index.html'))
-//   });
+server.get('/', function (req, res) {
+    res.render('../client/build/index.html')
+});
 
 //login endpoint
 server.get('/login', (req, res) => {
