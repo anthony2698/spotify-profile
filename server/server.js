@@ -7,7 +7,6 @@ const querystring = require('query-string');
 const cookieParser = require('cookie-parser');
 const axios = require('axios');
 const path = require('path');
-const history = require('connect-history-api-fallback');
 
 //enviorment varibles
 const client_id = process.env.CLIENT_ID;
@@ -40,22 +39,12 @@ const stateKey = 'spotify_auth_state';
 const server = express();
 
 // Priority serve any static files.
-server.use(express.static(path.resolve(__dirname, '../client/build')));
+// server.use(express.static(path.resolve(__dirname, '../client/build')));
 
 server
-    .use(express.static(path.resolve(__dirname, '../client/build')))
+    // .use(express.static(path.resolve(__dirname, '../client/build')))
     .use(cors())
     .use(cookieParser())
-    .use(
-        history({
-          verbose: true,
-          rewrites: [
-            { from: /\/login/, to: '/login' },
-            { from: /\/callback/, to: '/callback' },
-            { from: /\/refresh_token/, to: '/refresh_token' },
-          ],
-        }),
-    )
     .use(express.static(path.resolve(__dirname, '../client/build')));
 
 server.use('/', function (req, res) {
