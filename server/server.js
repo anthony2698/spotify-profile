@@ -7,6 +7,7 @@ const querystring = require('query-string');
 const cookieParser = require('cookie-parser');
 const axios = require('axios');
 const path = require('path');
+const history = require('connect-history-api-fallback');
 
 //enviorment varibles
 const client_id = process.env.CLIENT_ID;
@@ -37,16 +38,28 @@ const stateKey = 'spotify_auth_state';
 
 //server packages applications
 const server = express();
-// server.use(express.static(path.resolve(__dirname, '../client/build')));
-// server.use(express.static(path.resolve(__dirname, '../client/build')));
-server.use(cors());
-server.use(cookieParser());
 
 // Priority serve any static files.
-server.use(express.static(path.resolve(__dirname, '..', '/client/build')));
+server.use(express.static(path.resolve(__dirname, '../client/build')));
+
+server
+    .use(express.static(path.resolve(__dirname, '../client/build')))
+    .use(cors())
+    .use(cookieParser())
+    .use(
+        history({
+          verbose: true,
+          rewrites: [
+            { from: /\/login/, to: '/login' },
+            { from: /\/callback/, to: '/callback' },
+            { from: /\/refresh_token/, to: '/refresh_token' },
+          ],
+        }),
+    )
+    .use(express.static(path.resolve(__dirname, '../client/build')));
 
 server.use('/', function (req, res) {
-    res.render(path.resolve('../client/build/index.html'));
+    res.render(path.resolve(__dirname, '../client/build/index.html'));
 });
 
 //login endpoint
@@ -142,7 +155,7 @@ server.get('/refresh_token', (req, res) => {
 
 // All remaining requests return the React app, so it can handle routing.
 server.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../client/public/index.html'));
+    res.sendFile(path.resolve(__dirname, '../client/public', 'index.html'));
 });
 
 module.exports = server;
