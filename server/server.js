@@ -17,7 +17,7 @@ const port = process.env.PORT || 8000;
 
 //Production or Development Enviorment
 if (process.env.NODE_ENV !== 'production') {
-    redirect_uri = 'http://localhost:8000/callback/';
+    redirect_uri = 'http://localhost:8000/callback';
     frontend_uri = 'http://localhost:3000';
 }
 
@@ -61,7 +61,7 @@ server.get('/login', (req, res) => {
     //redirects to spotify authorization tool, with needed params
     res.redirect(`https://accounts.spotify.com/authorize?${querystring.stringify({
         response_type: 'code',
-        client_id: process.env.CLIENT_ID,
+        client_id: client_id,
         scope: scope,
         redirect_uri: redirect_uri,
         state: state,
