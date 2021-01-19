@@ -45,8 +45,8 @@ server.use(cookieParser());
 // Priority serve any static files.
 server.use(express.static(path.resolve(__dirname, '..', '/client/build')));
 
-server.use((req, res) => {
-    res.redirect('/');
+server.use('/', function (req, res) {
+    res.render(path.resolve('../client/build/index.html'));
 });
 
 //login endpoint
