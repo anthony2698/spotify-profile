@@ -11,13 +11,13 @@ const path = require('path');
 //enviorment varibles
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
-let redirect_uri = process.env.REDIRECT_URI || 'http://localhost:8000/callback';
-let frontend_uri = process.env.FRONTEND_URI || 'http://localhost:3000'; 
+let redirect_uri = process.env.REDIRECT_URI;
+let frontend_uri = process.env.FRONTEND_URI; 
 const port = process.env.PORT || 8000;
 
 //Production or Development Enviorment
 if (process.env.NODE_ENV !== 'production') {
-    redirect_uri = 'http://localhost:8000/callback';
+    redirect_uri = 'http://localhost:8000/callback/';
     frontend_uri = 'http://localhost:3000';
 }
 
@@ -61,7 +61,7 @@ server.get('/login', (req, res) => {
     //redirects to spotify authorization tool, with needed params
     res.redirect(`https://accounts.spotify.com/authorize?${querystring.stringify({
         response_type: 'code',
-        client_id: client_id,
+        client_id: process.env.CLIENT_ID,
         scope: scope,
         redirect_uri: redirect_uri,
         state: state,
