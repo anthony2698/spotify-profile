@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, StaticRouter } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { formatWithCommas, catchErrors } from '../utils';
 import { getArtist, followArtist, doesUserFollowArtist } from '../spotify';

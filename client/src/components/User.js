@@ -7,7 +7,7 @@ import Loader from './Loader.js';
 import TrackItem from './TrackItem.js';
 
 import { Main } from '../globalStyles';
-import { Header, NoAvatar, Avatar, UserName, Name, Stats, Stat, Number, NumberLabel, LogoutButton, Preview, Tracklist, TracklistHeading, MoreButton, Artist, ArtistArtwork, ArtistName, Mask } from '../styles/UserStyles.js'
+import { Header, UserName, Name, Stats, Stat, Number, NumberLabel, LogoutButton, Preview, Tracklist, TracklistHeading, MoreButton, Artist, ArtistArtwork, ArtistName, Mask } from '../styles/UserStyles.js'
 
 const User = () => {
     const [data, setData] = useState({
