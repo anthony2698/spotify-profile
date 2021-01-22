@@ -4,7 +4,7 @@ import { getPlaylists } from '../spotify';
 
 import Loader from './Loader';
 import { Main } from '../globalStyles';
-import { Wrapper, PlaylistName, PlaylistsContainer, Playlist, PlaylistCover, TotalTracks, Mask } from '../styles/PlaylistsStyles.js';
+import { Wrapper, PlaylistName, PlaylistsContainer, Playlist, PlaylistCover, TotalTracks } from '../styles/PlaylistsStyles.js';
 
 const Playlists = () => {
     const [data, setData] = useState({

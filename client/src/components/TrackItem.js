@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { formatDuration } from '../utils';
 import { TrackContainer, TrackArtwork, TrackMeta, TrackLeft, Mask, TrackAlbum, TrackRight } from '../styles/TrackItemStyles';
 
