@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 //packages needed for spotify authorization
 const express = require('express');
 const cors = require('cors');
@@ -9,8 +11,8 @@ const path = require('path');
 //enviorment varibles
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
-let redirect_uri = process.env.REDIRECT_URI || 'http://localhost:8000/callback';
-let frontend_uri = process.env.FRONTEND_URI || 'http://localhost:3000'; 
+let redirect_uri = process.env.REDIRECT_URI;
+let frontend_uri = process.env.FRONTEND_URI; 
 const port = process.env.PORT || 8000;
 
 //Production or Development Enviorment
@@ -18,14 +20,6 @@ if (process.env.NODE_ENV !== 'production') {
     redirect_uri = 'http://localhost:8000/callback';
     frontend_uri = 'http://localhost:3000';
 }
-
-//server packages applications
-const server = express();
-server.use(cors());
-server.use(cookieParser());
-
-// Priority serve any static files.
-server.use(express.static(path.resolve(__dirname, '../client/build')));
 
 //function that generates a random string we store as state
 const generateRandomString = (length) => {
@@ -36,15 +30,17 @@ const generateRandomString = (length) => {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return text;
-  };
+};
 
 //key name we will pass into the cookie with actual state
 const stateKey = 'spotify_auth_state';
 
-// All remaining requests return the React app, so it can handle routing.
-server.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../client/public', 'index.html'));
-});
+//server packages applications
+const server = express();
+
+server
+    .use(cors())
+    .use(cookieParser())
 
 //login endpoint
 server.get('/login', (req, res) => {
@@ -59,10 +55,10 @@ server.get('/login', (req, res) => {
 
     //redirects to spotify authorization tool, with needed params
     res.redirect(`https://accounts.spotify.com/authorize?${querystring.stringify({
-        client_id: client_id,
         response_type: 'code',
-        redirect_uri: redirect_uri,
+        client_id: client_id,
         scope: scope,
+        redirect_uri: redirect_uri,
         state: state,
     })}`);
 });
@@ -138,4 +134,3 @@ server.get('/refresh_token', (req, res) => {
 });
 
 module.exports = server;
-

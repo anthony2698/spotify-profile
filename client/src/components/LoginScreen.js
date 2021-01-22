@@ -2,7 +2,7 @@ import React from 'react';
 import { Login, LoginButton } from '../styles/LoginScreenStyles.js';
 
 const LoginScreen = () => {
-    const login_uri = process.env.NODE_ENV !== 'production' ? 'http://localhost:8000/login' : 'https://spotify-profile.herokuapp.com/login';
+    const login_uri = process.env.NODE_ENV !== 'production' ? 'http://localhost:8000/login' : 'https://spotify-profile1.herokuapp.com/login';
     return(
         <Login>
             <h1>Spotify Profile</h1>
